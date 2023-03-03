@@ -31,14 +31,20 @@ public class ScreenEdgeCollider3D : MonoBehaviour
     private Vector3 topLeftPoint;
     private Vector3 bottomRightPoint;
     private Vector3 bottomLeftPoint;
-    
-    [EditorButton]
+
+    private void Start()
+    {
+        SetColliders();
+    }
+
     public void SetColliders()
     {
         if (automaticScreenRes)
         {
-            screenWidth = Screen.currentResolution.width;
-            screenHeight = Screen.currentResolution.height;
+            //screenWidth = Display.main.renderingWidth;//.currentResolution.width;
+            screenWidth = Screen.width;//.systemWidth;//.currentResolution.width;
+            screenHeight = Screen.height; ////Display.main.systemHeight; //.currentResolution.height;
+
         }
         
         SetPoints();
@@ -94,14 +100,14 @@ public class ScreenEdgeCollider3D : MonoBehaviour
     {
         foreach (var o in colliders)
         {
-            DestroyImmediate(o);
+            Destroy(o);
         }
     }
 
-    private void OnValidate()
+    /*private void OnValidate()
     {
         SetPoints();
-    }
+    }*/
 
     private void SetPoints()
     {
@@ -126,6 +132,7 @@ public class ScreenEdgeCollider3D : MonoBehaviour
     private void OnDrawGizmos()
     {
         if(!gizmos) return;
+        if(!Application.isPlaying) return;
         
         Gizmos.color = Color.green;
         foreach (var point in points)
